@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Projectile.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Gremlins</a> &gt; <a href="index.source.html" class="el_package">gremlins</a> &gt; <span class="el_source">Projectile.java</span></div><h1>Projectile.java</h1><pre class="source lang-java linenums">package gremlins;
+
+import processing.core.PApplet;
+import processing.core.PImage;
+
+public class Projectile {
+
+    protected App app;
+    protected int x;
+    protected int y;
+    protected PImage sprite;
+    protected int speed;
+    protected int spriteSize;
+    protected boolean shotFired;
+    protected int direction;
+    protected boolean collision;
+    protected String type;
+
+<span class="fc" id="L19">    public Projectile(App app, int x, int y, boolean shotFired, int direction, PImage sprite) {</span>
+<span class="fc" id="L20">        this.speed = 4;</span>
+<span class="fc" id="L21">        this.app = app;</span>
+<span class="fc" id="L22">        this.x = x;</span>
+<span class="fc" id="L23">        this.y = y;</span>
+<span class="fc" id="L24">        this.sprite = sprite;</span>
+<span class="fc" id="L25">        this.shotFired = shotFired;</span>
+<span class="fc" id="L26">        this.direction = direction;</span>
+<span class="fc" id="L27">        this.collision = false;</span>
+<span class="fc" id="L28">        this.spriteSize = App.SPRITESIZE;</span>
+<span class="fc" id="L29">    }</span>
+
+    public void tick() {
+
+<span class="nc bnc" id="L33" title="All 2 branches missed.">        if (collision == false) {</span>
+
+<span class="nc bnc" id="L35" title="All 2 branches missed.">            if (this.app.colCheck.checkStoneCollision(this.x, this.y, this.spriteSize) == true) {</span>
+<span class="nc" id="L36">                this.collision = true;</span>
+            }
+
+            // if statement to check which direction the projectile has been shot.
+<span class="nc bnc" id="L40" title="All 2 branches missed.">            if (this.direction == 0) {</span>
+<span class="nc" id="L41">                left();</span>
+<span class="nc bnc" id="L42" title="All 2 branches missed.">            } else if (this.direction == 1) {</span>
+<span class="nc" id="L43">                right();</span>
+<span class="nc bnc" id="L44" title="All 2 branches missed.">            } else if (this.direction == 2) {</span>
+<span class="nc" id="L45">                up();</span>
+<span class="nc bnc" id="L46" title="All 2 branches missed.">            } else if (this.direction == 3) {</span>
+<span class="nc" id="L47">                down();</span>
+            }
+        }
+<span class="nc" id="L50">    }</span>
+
+    public void draw(PApplet app) {
+<span class="nc bnc" id="L53" title="All 2 branches missed.">        if (collision == false) {</span>
+<span class="nc" id="L54">            app.image(this.sprite, this.x, this.y);</span>
+        }
+<span class="nc" id="L56">    }</span>
+
+    // Gets X Value
+    public int getX() {
+<span class="fc" id="L60">        return this.x;</span>
+    }
+
+    // Gets Y value
+    public int getY() {
+<span class="fc" id="L65">        return this.y;</span>
+    }
+
+    // sets Movement to right direction
+    public void right() {
+<span class="fc" id="L70">        this.x += this.speed;</span>
+<span class="fc" id="L71">    }</span>
+
+    // sets Movement to Left direction
+    public void left() {
+<span class="fc" id="L75">        this.x -= this.speed;</span>
+<span class="fc" id="L76">    }</span>
+
+    // sets Movement to up direction
+    public void up() {
+<span class="fc" id="L80">        this.y -= this.speed;</span>
+<span class="fc" id="L81">    }</span>
+
+    // sets Movement to down direction
+    public void down() {
+<span class="fc" id="L85">        this.y += this.speed;</span>
+<span class="fc" id="L86">    }</span>
+
+    // Sets if there has been a collision
+    public void setCollision(boolean collision) {
+<span class="fc" id="L90">        this.collision = collision;</span>
+<span class="fc" id="L91">    }</span>
+
+    // returns if shot has been fired
+    public boolean getShot() {
+<span class="fc" id="L95">        return this.shotFired;</span>
+    }
+
+    // Sets the value when shoe it fired
+    public boolean setShot(boolean shotFired) {
+<span class="fc" id="L100">        return this.shotFired;</span>
+    }
+
+    // Checks if there has been a collision
+    public boolean getCollision() {
+<span class="fc" id="L105">        return this.collision;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="gremlins.BrickWallTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2024-07-15T17:15:08" hostname="daleMM.local" time="0.019">
+  <properties/>
+  <testcase name="constructor()" classname="gremlins.BrickWallTest" time="0.009"/>
+  <testcase name="fireCollision()" classname="gremlins.BrickWallTest" time="0.001"/>
+  <testcase name="checkDestruction()" classname="gremlins.BrickWallTest" time="0.002"/>
+  <testcase name="getDestroyed()" classname="gremlins.BrickWallTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

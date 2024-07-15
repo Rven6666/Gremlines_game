@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CollisionCheck.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Gremlins</a> &gt; <a href="index.source.html" class="el_package">gremlins</a> &gt; <span class="el_source">CollisionCheck.java</span></div><h1>CollisionCheck.java</h1><pre class="source lang-java linenums">package gremlins;
+
+import java.util.List;
+
+public class CollisionCheck {
+    private App app;
+    private int spriteSize;
+    private List&lt;Gremlins&gt; gremlinList;
+    private List&lt;Brickwalls&gt; brickwallList;
+    private List&lt;Stonewalls&gt; stonewallList;
+    private List&lt;Fireball&gt; fireballList;
+    private List&lt;Slimeball&gt; slimeballList;
+    private List&lt;Pumkin&gt; pumkinList;
+    private List&lt;Ghost&gt; ghostList;
+
+<span class="fc" id="L16">    public CollisionCheck(App app) {</span>
+<span class="fc" id="L17">        this.app = app;</span>
+<span class="fc" id="L18">        this.brickwallList = app.brickwall;</span>
+<span class="fc" id="L19">        this.stonewallList = app.stonewall;</span>
+<span class="fc" id="L20">        this.gremlinList = app.gremlinList;</span>
+<span class="fc" id="L21">        this.fireballList = app.fireballList;</span>
+<span class="fc" id="L22">        this.slimeballList = app.slimeballList;</span>
+<span class="fc" id="L23">        this.ghostList = app.ghostList;</span>
+<span class="fc" id="L24">        this.pumkinList = app.pumkinballList;</span>
+<span class="fc" id="L25">        this.spriteSize = App.SPRITESIZE;</span>
+<span class="fc" id="L26">    }</span>
+
+    // CHECKS COLLISION IN CURRENT DIRECTION FOR MOVEMENT OF CHARACTERS
+    public boolean checkMoveCollision(int x, int y, int direction, int spriteSize) { // checks collisions with direction
+
+<span class="nc" id="L31">        int checkTopX = (x + 1) / spriteSize;</span>
+<span class="nc" id="L32">        int checkTopY = (y - 1) / spriteSize;</span>
+<span class="nc" id="L33">        int checkBottomX = (x + 1) / spriteSize;</span>
+<span class="nc" id="L34">        int checkBottomY = (y + spriteSize) / spriteSize;</span>
+<span class="nc" id="L35">        int checkRightX = (x + spriteSize) / spriteSize;</span>
+<span class="nc" id="L36">        int checkRightY = y / spriteSize;</span>
+<span class="nc" id="L37">        int checkLeftX = (x - 1) / spriteSize;</span>
+<span class="nc" id="L38">        int checkLeftY = y / spriteSize;</span>
+
+<span class="nc bnc" id="L40" title="All 2 branches missed.">        if (direction == 2) { // UP</span>
+<span class="nc bnc" id="L41" title="All 2 branches missed.">            if (checkWalls(checkTopX, checkTopY) == true) {</span>
+<span class="nc" id="L42">                return true;</span>
+            }
+<span class="nc bnc" id="L44" title="All 2 branches missed.">        } else if (direction == 3) { // DOWN</span>
+<span class="nc bnc" id="L45" title="All 2 branches missed.">            if (checkWalls(checkBottomX, checkBottomY) == true) {</span>
+<span class="nc" id="L46">                return true;</span>
+            }
+<span class="nc bnc" id="L48" title="All 2 branches missed.">        } else if (direction == 0) { // LEFT</span>
+<span class="nc bnc" id="L49" title="All 2 branches missed.">            if (checkWalls(checkLeftX, checkLeftY) == true) {</span>
+<span class="nc" id="L50">                return true;</span>
+            }
+<span class="nc bnc" id="L52" title="All 2 branches missed.">        } else if (direction == 1) { // RIGHT</span>
+<span class="nc bnc" id="L53" title="All 2 branches missed.">            if (checkWalls(checkRightX, checkRightY) == true) {</span>
+<span class="nc" id="L54">                return true;</span>
+            }
+        }
+<span class="nc" id="L57">        return false;</span>
+    }
+
+    // CHECKS COLLISION FOR OF ALL WALLS IN MOVEMENT
+    public boolean checkWalls(int x, int y) {
+<span class="nc bnc" id="L62" title="All 2 branches missed.">        for (Stonewalls stone : this.stonewallList) {</span>
+<span class="nc" id="L63">            int coordX = stone.getX() / spriteSize;</span>
+<span class="nc" id="L64">            int coordY = stone.getY() / spriteSize;</span>
+<span class="nc bnc" id="L65" title="All 4 branches missed.">            if (coordX == x &amp;&amp; coordY == y) {</span>
+
+<span class="nc bnc" id="L67" title="All 2 branches missed.">                if (stone.solidTile == true) {</span>
+<span class="nc" id="L68">                    return true;</span>
+                }
+            }
+<span class="nc" id="L71">        }</span>
+<span class="nc bnc" id="L72" title="All 2 branches missed.">        for (Brickwalls brick : this.brickwallList) {</span>
+<span class="nc" id="L73">            int coordX = brick.getX() / spriteSize;</span>
+<span class="nc" id="L74">            int coordY = brick.getY() / spriteSize;</span>
+<span class="nc bnc" id="L75" title="All 4 branches missed.">            if (coordX == x &amp;&amp; coordY == y) {</span>
+<span class="nc bnc" id="L76" title="All 2 branches missed.">                if (brick.getDestroyed() == false) {</span>
+<span class="nc" id="L77">                    return true;</span>
+                }
+            }
+<span class="nc" id="L80">        }</span>
+
+<span class="nc" id="L82">        return false;</span>
+    }
+
+    public boolean checkGremlinCollision(int x, int y, int spriteSize) {
+<span class="nc" id="L86">        int checkRightSide = x + spriteSize;</span>
+<span class="nc" id="L87">        int checkBottomSide = y + spriteSize;</span>
+<span class="nc bnc" id="L88" title="All 2 branches missed.">        for (Gremlins gremlin : this.gremlinList) {</span>
+<span class="nc" id="L89">            int gremlinLeft = gremlin.getX();</span>
+<span class="nc" id="L90">            int gremlinRight = gremlin.getX() + spriteSize;</span>
+<span class="nc" id="L91">            int gremlinTop = gremlin.getY();</span>
+<span class="nc" id="L92">            int gremlinBottom = gremlin.getY() + spriteSize;</span>
+
+<span class="nc bnc" id="L94" title="All 8 branches missed.">            if (checkRightSide &gt; gremlinLeft &amp;&amp; x &lt; gremlinRight &amp;&amp;</span>
+                    checkBottomSide &gt; gremlinTop
+<span class="nc bnc" id="L96" title="All 2 branches missed.">                    &amp;&amp; y &lt; gremlinBottom &amp;&amp; gremlin.getIsAlive() == true) {</span>
+<span class="nc" id="L97">                gremlinList.remove(gremlin);</span>
+<span class="nc" id="L98">                return true;</span>
+            }
+<span class="nc" id="L100">        }</span>
+<span class="nc bnc" id="L101" title="All 2 branches missed.">        for (Ghost ghost : this.ghostList) {</span>
+<span class="nc" id="L102">            int ghostLeft = ghost.getX();</span>
+<span class="nc" id="L103">            int ghostRight = ghost.getX() + spriteSize;</span>
+<span class="nc" id="L104">            int ghostTop = ghost.getY();</span>
+<span class="nc" id="L105">            int ghostBottom = ghost.getY() + spriteSize;</span>
+
+<span class="nc bnc" id="L107" title="All 8 branches missed.">            if (checkRightSide &gt; ghostLeft &amp;&amp; x &lt; ghostRight &amp;&amp;</span>
+                    checkBottomSide &gt; ghostTop
+<span class="nc bnc" id="L109" title="All 2 branches missed.">                    &amp;&amp; y &lt; ghostBottom &amp;&amp; ghost.getIsAlive() == true) {</span>
+<span class="nc" id="L110">                ghostList.remove(ghost);</span>
+<span class="nc" id="L111">                return true;</span>
+            }
+<span class="nc" id="L113">        }</span>
+<span class="nc" id="L114">        return false;</span>
+    }
+
+    public boolean checkPowerUpcol(int x, int y, int spriteSize) {
+<span class="nc" id="L118">        int powerUpLeft = this.app.powerUp.getX();</span>
+<span class="nc" id="L119">        int powerUpRight = this.app.powerUp.getX() + spriteSize;</span>
+<span class="nc" id="L120">        int powerUpTop = this.app.powerUp.getY();</span>
+<span class="nc" id="L121">        int powerUpBottom = this.app.powerUp.getY() + spriteSize;</span>
+<span class="nc" id="L122">        int wizRightSide = x + spriteSize;</span>
+<span class="nc" id="L123">        int wizBottomSide = y + spriteSize;</span>
+
+<span class="nc bnc" id="L125" title="All 8 branches missed.">        if (wizRightSide &gt; powerUpLeft &amp;&amp; x &lt; powerUpRight &amp;&amp;</span>
+                wizBottomSide &gt; powerUpTop
+                &amp;&amp; y &lt; powerUpBottom) {
+<span class="nc" id="L128">            app.powerUp.setCollision(true);</span>
+<span class="nc" id="L129">            app.powerUp.setSpawnTimer(getRanFloatNum(10, 5));</span>
+<span class="nc" id="L130">            return true;</span>
+        }
+<span class="nc" id="L132">        return false;</span>
+    }
+
+    public boolean checkFireballCollision(int x, int y, int spriteSize) {
+<span class="nc bnc" id="L136" title="All 2 branches missed.">        for (Fireball fireball : this.fireballList) {</span>
+<span class="nc" id="L137">            int fireballLeft = fireball.getX();</span>
+<span class="nc" id="L138">            int fireballRight = fireball.getX() + spriteSize;</span>
+<span class="nc" id="L139">            int fireballTop = fireball.getY();</span>
+<span class="nc" id="L140">            int fireballBottom = fireball.getY() + spriteSize;</span>
+<span class="nc" id="L141">            int gremlinRightSide = x + spriteSize;</span>
+<span class="nc" id="L142">            int gremlinBottomSide = y + spriteSize;</span>
+
+<span class="nc bnc" id="L144" title="All 8 branches missed.">            if (gremlinRightSide &gt; fireballLeft &amp;&amp; x &lt; fireballRight &amp;&amp;</span>
+                    gremlinBottomSide &gt; fireballTop
+<span class="nc bnc" id="L146" title="All 2 branches missed.">                    &amp;&amp; y &lt; fireballBottom &amp;&amp; fireball.getCollision() == false) {</span>
+<span class="nc" id="L147">                fireball.setCollision(true);</span>
+<span class="nc" id="L148">                fireballList.remove(fireball);</span>
+<span class="nc" id="L149">                return true;</span>
+            }
+<span class="nc" id="L151">        }</span>
+<span class="nc" id="L152">        return false;</span>
+    }
+
+    // CHECKS COLLISION FOR EXIT PORTAL
+    public boolean checkExitCollision(int x, int y, int spriteSize) {
+<span class="nc" id="L157">        int portalLeft = this.app.portal.getX();</span>
+<span class="nc" id="L158">        int portalRight = this.app.portal.getX() + spriteSize;</span>
+<span class="nc" id="L159">        int portalTop = this.app.portal.getY();</span>
+<span class="nc" id="L160">        int portalBottom = this.app.portal.getY() + spriteSize;</span>
+<span class="nc" id="L161">        int wizRightSide = x + spriteSize;</span>
+<span class="nc" id="L162">        int wizBottomSide = y + spriteSize;</span>
+
+<span class="nc bnc" id="L164" title="All 8 branches missed.">        if (wizRightSide &gt; portalLeft &amp;&amp; x &lt; portalRight &amp;&amp;</span>
+                wizBottomSide &gt; portalTop
+                &amp;&amp; y &lt; portalBottom) {
+<span class="nc" id="L167">            return true;</span>
+        }
+<span class="nc" id="L169">        return false;</span>
+    }
+
+    // CHECKS COLLISION FOR SLIME BALLS
+    public boolean checkSlimeballCollision(int x, int y, int spriteSize) {
+<span class="nc" id="L174">        int brickRightSide = x + spriteSize;</span>
+<span class="nc" id="L175">        int brickBottomSide = y + spriteSize;</span>
+
+<span class="nc bnc" id="L177" title="All 2 branches missed.">        for (Slimeball slimeball : this.slimeballList) {</span>
+<span class="nc" id="L178">            int slimeballLeft = slimeball.getX();</span>
+<span class="nc" id="L179">            int slimeballRight = (slimeball.getX() + spriteSize);</span>
+<span class="nc" id="L180">            int slimeballTop = slimeball.getY();</span>
+<span class="nc" id="L181">            int slimeballBottom = (slimeball.getY() + spriteSize);</span>
+
+<span class="nc bnc" id="L183" title="All 8 branches missed.">            if (brickRightSide &gt; slimeballLeft &amp;&amp; x &lt; slimeballRight &amp;&amp;</span>
+                    brickBottomSide &gt; slimeballTop
+<span class="nc bnc" id="L185" title="All 2 branches missed.">                    &amp;&amp; y &lt; slimeballBottom &amp;&amp; slimeball.getCollision() == false) {</span>
+<span class="nc" id="L186">                slimeball.setCollision(true);</span>
+<span class="nc" id="L187">                slimeballList.remove(slimeball);</span>
+<span class="nc" id="L188">                return true;</span>
+            }
+<span class="nc" id="L190">        }</span>
+<span class="nc" id="L191">        return false;</span>
+    }
+
+    // CHECKS COLLISION FOR PUMKINBALLS
+    public boolean checkPumkinCollision(int x, int y, int spriteSize) {
+<span class="nc" id="L196">        int brickRightSide = x + spriteSize;</span>
+<span class="nc" id="L197">        int brickBottomSide = y + spriteSize;</span>
+
+<span class="nc bnc" id="L199" title="All 2 branches missed.">        for (Pumkin pumkin : this.pumkinList) {</span>
+<span class="nc" id="L200">            int pumkinballLeft = pumkin.getX();</span>
+<span class="nc" id="L201">            int pumkinballRight = (pumkin.getX() + spriteSize);</span>
+<span class="nc" id="L202">            int pumkinballTop = pumkin.getY();</span>
+<span class="nc" id="L203">            int pumkinballBottom = (pumkin.getY() + spriteSize);</span>
+
+<span class="nc bnc" id="L205" title="All 8 branches missed.">            if (brickRightSide &gt; pumkinballLeft &amp;&amp; x &lt; pumkinballRight &amp;&amp;</span>
+                    brickBottomSide &gt; pumkinballTop
+<span class="nc bnc" id="L207" title="All 2 branches missed.">                    &amp;&amp; y &lt; pumkinballBottom &amp;&amp; pumkin.getCollision() == false) {</span>
+<span class="nc" id="L208">                pumkin.setCollision(true);</span>
+<span class="nc" id="L209">                pumkinList.remove(pumkin);</span>
+<span class="nc" id="L210">                return true;</span>
+            }
+<span class="nc" id="L212">        }</span>
+<span class="nc" id="L213">        return false;</span>
+    }
+
+    // CHECKS COLLISION FOR STONE WALLS
+    public boolean checkStoneCollision(int x, int y, int spriteSize) {
+<span class="nc" id="L218">        int ballRight = (x + (spriteSize / 2)) + (spriteSize / 2);</span>
+<span class="nc" id="L219">        int ballBottom = (y + (spriteSize / 2)) + (spriteSize / 2);</span>
+<span class="nc bnc" id="L220" title="All 2 branches missed.">        for (Stonewalls stone : stonewallList) {</span>
+<span class="nc" id="L221">            int stoneLeft = stone.getX();</span>
+<span class="nc" id="L222">            int stoneRight = stone.getX() + spriteSize;</span>
+<span class="nc" id="L223">            int stoneTop = stone.getY();</span>
+<span class="nc" id="L224">            int stoneBottom = stone.getY() + spriteSize;</span>
+
+<span class="nc bnc" id="L226" title="All 8 branches missed.">            if (ballRight &gt; stoneLeft &amp;&amp; x &lt; stoneRight &amp;&amp;</span>
+                    ballBottom &gt; stoneTop
+                    &amp;&amp; y &lt; stoneBottom) {
+<span class="nc" id="L229">                return true;</span>
+
+            }
+<span class="nc" id="L232">        }</span>
+<span class="nc" id="L233">        return false;</span>
+    }
+
+    // CHECKS COLLISION FOR BRICKWALLS
+    public boolean checkBrickwallCollision(int x, int y, int spriteSize, String type) {
+<span class="nc" id="L238">        int objectRightSide = (x + (spriteSize / 2)) + (spriteSize / 2);</span>
+<span class="nc" id="L239">        int objectBottomSide = (y + (spriteSize / 2)) + (spriteSize / 2);</span>
+<span class="nc bnc" id="L240" title="All 2 branches missed.">        for (Brickwalls brick : this.brickwallList) {</span>
+<span class="nc" id="L241">            int brickLeft = brick.getX();</span>
+<span class="nc" id="L242">            int brickRight = (brick.getX() + spriteSize);</span>
+<span class="nc" id="L243">            int brickTop = brick.getY();</span>
+<span class="nc" id="L244">            int brickBottom = (brick.getY() + spriteSize);</span>
+
+<span class="nc bnc" id="L246" title="All 8 branches missed.">            if (objectRightSide &gt; brickLeft &amp;&amp; x &lt; brickRight &amp;&amp;</span>
+                    objectBottomSide &gt; brickTop
+                    &amp;&amp; y &lt; brickBottom) {
+<span class="nc bnc" id="L249" title="All 2 branches missed.">                if (type == &quot;fire&quot;) {</span>
+<span class="nc" id="L250">                    brick.fireCollision();</span>
+                }
+<span class="nc bnc" id="L252" title="All 2 branches missed.">                if (brick.getDestroyed() == true) {</span>
+<span class="nc" id="L253">                    brickwallList.remove(brick);</span>
+                }
+<span class="nc" id="L255">                return true;</span>
+            }
+
+<span class="nc" id="L258">        }</span>
+<span class="nc" id="L259">        return false;</span>
+    }
+
+    // RETURNS RANDOM FLOAT BETWEEN TWO VALUES
+    public float getRanFloatNum(int high, int low) {
+<span class="nc" id="L264">        return (float) Math.round((Math.random() * (high - low)) + low);</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

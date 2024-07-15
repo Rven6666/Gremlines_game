@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Map.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Gremlins</a> &gt; <a href="index.source.html" class="el_package">gremlins</a> &gt; <span class="el_source">Map.java</span></div><h1>Map.java</h1><pre class="source lang-java linenums">package gremlins;
+
+import java.util.Scanner;
+import java.io.*;
+import java.util.ArrayList;
+
+public class Map {
+
+    private App app;
+    protected Scanner scan;
+    protected File levelLayout;
+
+<span class="fc" id="L13">    public Map(App app) {</span>
+<span class="fc" id="L14">        this.app = app;</span>
+<span class="fc" id="L15">    }</span>
+
+    // BUILDS MAP VERSIONS
+    public void buildMap(int index) {
+
+<span class="nc" id="L20">        this.levelLayout = new File(</span>
+<span class="nc" id="L21">                this.app.conf.getJSONArray(&quot;levels&quot;).getJSONObject(index).getString(&quot;layout&quot;));</span>
+<span class="nc" id="L22">        this.app.wizLives = this.app.conf.getInt(&quot;lives&quot;);</span>
+<span class="nc" id="L23">        this.app.wizCoolDownTime = this.app.conf.getJSONArray(&quot;levels&quot;).getJSONObject(index)</span>
+<span class="nc" id="L24">                .getDouble(&quot;wizard_cooldown&quot;);</span>
+<span class="nc" id="L25">        this.app.enemyCoolDown = this.app.conf.getJSONArray(&quot;levels&quot;).getJSONObject(index)</span>
+<span class="nc" id="L26">                .getDouble(&quot;enemy_cooldown&quot;);</span>
+
+<span class="nc" id="L28">        this.app.ghostCoolDown = this.app.conf.getJSONArray(&quot;levels&quot;).getJSONObject(index)</span>
+<span class="nc" id="L29">                .getDouble(&quot;ghost_cooldown&quot;);</span>
+
+<span class="nc" id="L31">        ArrayList&lt;Integer&gt; levelInputValues = new ArrayList&lt;Integer&gt;();</span>
+<span class="nc" id="L32">        levelInputValues = new ArrayList&lt;Integer&gt;();</span>
+        try {
+<span class="nc" id="L34">            this.scan = new Scanner(this.levelLayout);</span>
+
+<span class="nc bnc" id="L36" title="All 2 branches missed.">            while (this.scan.hasNextLine()) {</span>
+<span class="nc" id="L37">                String stringLine = this.scan.nextLine();</span>
+<span class="nc bnc" id="L38" title="All 2 branches missed.">                for (int i = 0; i &lt; stringLine.length(); i++) {</span>
+<span class="nc bnc" id="L39" title="All 2 branches missed.">                    if (stringLine.charAt(i) == 'X') {</span>
+<span class="nc" id="L40">                        levelInputValues.add(3);</span>
+<span class="nc bnc" id="L41" title="All 2 branches missed.">                    } else if (stringLine.charAt(i) == ' ') {</span>
+<span class="nc" id="L42">                        levelInputValues.add(0);</span>
+<span class="nc bnc" id="L43" title="All 2 branches missed.">                    } else if (stringLine.charAt(i) == 'B') {</span>
+<span class="nc" id="L44">                        levelInputValues.add(1);</span>
+<span class="nc bnc" id="L45" title="All 2 branches missed.">                    } else if (stringLine.charAt(i) == 'W') {</span>
+<span class="nc" id="L46">                        levelInputValues.add(4);</span>
+<span class="nc bnc" id="L47" title="All 2 branches missed.">                    } else if (stringLine.charAt(i) == 'G') {</span>
+<span class="nc" id="L48">                        levelInputValues.add(5);</span>
+<span class="nc bnc" id="L49" title="All 2 branches missed.">                    } else if (stringLine.charAt(i) == 'E') {</span>
+<span class="nc" id="L50">                        levelInputValues.add(6);</span>
+<span class="nc bnc" id="L51" title="All 2 branches missed.">                    } else if (stringLine.charAt(i) == 'P') {</span>
+<span class="nc" id="L52">                        levelInputValues.add(2);</span>
+<span class="nc bnc" id="L53" title="All 2 branches missed.">                    } else if (stringLine.charAt(i) == 'H') {</span>
+<span class="nc" id="L54">                        levelInputValues.add(7);</span>
+                    }
+                }
+<span class="nc" id="L57">            }</span>
+<span class="nc" id="L58">        } catch (FileNotFoundException e) {</span>
+<span class="nc" id="L59">            System.out.println(&quot;File not found&quot;);</span>
+<span class="nc" id="L60">        }</span>
+
+        // Multidimentional array of map integers for cooridinate placement and fed
+        // elements from ArrayList.
+<span class="nc" id="L64">        int counter = 0;</span>
+<span class="nc bnc" id="L65" title="All 2 branches missed.">        for (int i = 0; i &lt; this.app.mapCoordinates.length; i++) {</span>
+<span class="nc bnc" id="L66" title="All 2 branches missed.">            for (int j = 0; j &lt; this.app.mapCoordinates[i].length; j++) {</span>
+<span class="nc" id="L67">                this.app.mapCoordinates[i][j] = levelInputValues.get(counter);</span>
+<span class="nc" id="L68">                counter++;</span>
+            }
+        }
+        // map Set up
+<span class="nc bnc" id="L72" title="All 2 branches missed.">        for (int row = 0; row &lt; this.app.mapCoordinates.length; row++) {</span>
+<span class="nc bnc" id="L73" title="All 2 branches missed.">            for (int collumn = 0; collumn &lt; this.app.mapCoordinates[row].length; collumn++) {</span>
+<span class="nc" id="L74">                int tile = this.app.mapCoordinates[row][collumn];</span>
+<span class="nc" id="L75">                int obCollumn = collumn * App.SPRITESIZE;</span>
+<span class="nc" id="L76">                int obRow = row * App.SPRITESIZE;</span>
+<span class="nc bnc" id="L77" title="All 8 branches missed.">                switch (tile) {</span>
+                    case 3:
+<span class="nc" id="L79">                        this.app.stonewall</span>
+<span class="nc" id="L80">                                .add(new Stonewalls(app, obCollumn, obRow, this.app.stoneSprite, this.app.solidTile));</span>
+<span class="nc" id="L81">                        break;</span>
+                    case 4:
+<span class="nc" id="L83">                        this.app.wizard = new Wizard(app, this.app.wizCoolDownTime, obCollumn, obRow,</span>
+                                this.app.wizSpriteList,
+                                this.app.wizLives);
+<span class="nc" id="L86">                        break;</span>
+                    case 5:
+<span class="nc" id="L88">                        this.app.gremlinList</span>
+<span class="nc" id="L89">                                .add(new Gremlins(app, this.app.enemyCoolDown, obCollumn, obRow,</span>
+                                        this.app.gremlinSprite));
+<span class="nc" id="L91">                        break;</span>
+                    case 1:
+<span class="nc" id="L93">                        this.app.brickwall</span>
+<span class="nc" id="L94">                                .add(new Brickwalls(app, obCollumn, obRow, this.app.brickList, this.app.solidTile));</span>
+<span class="nc" id="L95">                        break;</span>
+                    case 6:
+<span class="nc" id="L97">                        this.app.portal = new ExitPortal(obCollumn, obRow, this.app.portalSprite);</span>
+<span class="nc" id="L98">                        break;</span>
+                    case 2:
+<span class="nc" id="L100">                        this.app.powerUp = new PowerUp(app, obCollumn, obRow, this.app.powerUpList);</span>
+<span class="nc" id="L101">                        break;</span>
+                    case 7:
+<span class="nc" id="L103">                        this.app.ghostList</span>
+<span class="nc" id="L104">                                .add(new Ghost(app, this.app.enemyCoolDown, obCollumn, obRow, this.app.ghostSprite));</span>
+                        break;
+                }
+            }
+        }
+<span class="nc" id="L109">    }</span>
+
+    public int[] mapRandomSpawn() {
+<span class="nc" id="L112">        int distance = 10;</span>
+
+<span class="nc" id="L114">        int wizXHigh = (app.wizard.getX() / App.SPRITESIZE) + distance;</span>
+<span class="nc" id="L115">        int wizXLow = (app.wizard.getX() / App.SPRITESIZE) - distance;</span>
+<span class="nc" id="L116">        int wizYHigh = (app.wizard.getY() / App.SPRITESIZE) + distance;</span>
+<span class="nc" id="L117">        int wizYLow = (app.wizard.getY() / App.SPRITESIZE) - distance;</span>
+
+<span class="nc" id="L119">        int[] coords = new int[2];</span>
+
+<span class="nc" id="L121">        int count = 0;</span>
+<span class="nc" id="L122">        int ranCount = 0;</span>
+
+<span class="nc bnc" id="L124" title="All 2 branches missed.">        for (int row = 0; row &lt; this.app.mapCoordinates.length; row++) {</span>
+<span class="nc bnc" id="L125" title="All 2 branches missed.">            for (int col = 0; col &lt; this.app.mapCoordinates[row].length; col++) {</span>
+<span class="nc bnc" id="L126" title="All 2 branches missed.">                if (this.app.mapCoordinates[row][col] == 0) {</span>
+<span class="nc bnc" id="L127" title="All 32 branches missed.">                    if (row &lt; wizYLow &amp;&amp; col &lt; wizXLow || row &gt; wizYHigh &amp;&amp; col &lt; wizXLow</span>
+                            || col &gt; wizXHigh &amp;&amp; row &lt; wizYLow
+                            || row &gt; wizYHigh &amp;&amp; col &gt; wizXHigh || col &gt; wizXLow &amp;&amp; row &gt; wizYHigh
+                            || row &gt; wizYLow &amp;&amp; col &gt; wizXHigh || row &lt; wizYLow &amp;&amp; col &gt; wizXLow
+                            || col &lt; wizXLow &amp;&amp; row &gt; wizYLow) {
+<span class="nc" id="L132">                        count++;</span>
+                    }
+
+                }
+            }
+        }
+<span class="nc" id="L138">        System.out.println(&quot;count&quot; + count);</span>
+<span class="nc" id="L139">        int ranCoord = (int) ((Math.random() * (count - 0)) + 0);</span>
+
+<span class="nc bnc" id="L141" title="All 2 branches missed.">        for (int row = 0; row &lt; this.app.mapCoordinates.length; row++) {</span>
+<span class="nc bnc" id="L142" title="All 2 branches missed.">            for (int col = 0; col &lt; this.app.mapCoordinates[row].length; col++) {</span>
+<span class="nc bnc" id="L143" title="All 2 branches missed.">                if (this.app.mapCoordinates[row][col] == 0) {</span>
+<span class="nc bnc" id="L144" title="All 2 branches missed.">                    if (ranCount == ranCoord) {</span>
+<span class="nc" id="L145">                        coords[1] = row * App.SPRITESIZE;</span>
+<span class="nc" id="L146">                        coords[0] = col * App.SPRITESIZE;</span>
+                    }
+<span class="nc" id="L148">                    ranCount++;</span>
+
+                }
+            }
+        }
+
+<span class="nc" id="L154">        return coords;</span>
+    }
+
+    public int noBackTrack(int direction) {
+
+<span class="nc bnc" id="L159" title="All 2 branches missed.">        if (direction == 1) {</span>
+<span class="nc" id="L160">            return 0;</span>
+<span class="nc bnc" id="L161" title="All 2 branches missed.">        } else if (direction == 0) {</span>
+<span class="nc" id="L162">            return 1;</span>
+<span class="nc bnc" id="L163" title="All 2 branches missed.">        } else if (direction == 3) {</span>
+<span class="nc" id="L164">            return 2;</span>
+<span class="nc bnc" id="L165" title="All 2 branches missed.">        } else if (direction == 2) {</span>
+<span class="nc" id="L166">            return 3;</span>
+        }
+<span class="nc" id="L168">        return direction;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

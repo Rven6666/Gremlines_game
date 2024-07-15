@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="gremlins.TimerTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2024-07-15T17:15:08" hostname="daleMM.local" time="0.017">
+  <properties/>
+  <testcase name="constructor()" classname="gremlins.TimerTest" time="0.002"/>
+  <testcase name="getTime()" classname="gremlins.TimerTest" time="0.002"/>
+  <testcase name="countUp()" classname="gremlins.TimerTest" time="0.001"/>
+  <testcase name="countDown()" classname="gremlins.TimerTest" time="0.003"/>
+  <testcase name="setTime()" classname="gremlins.TimerTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

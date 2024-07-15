@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Characters.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Gremlins</a> &gt; <a href="index.source.html" class="el_package">gremlins</a> &gt; <span class="el_source">Characters.java</span></div><h1>Characters.java</h1><pre class="source lang-java linenums">package gremlins;
+
+public class Characters {
+
+    protected App app;
+    protected int x;
+    protected int y;
+    protected int spriteSize;
+    protected int speed;
+    protected int direction;
+    protected boolean isAlive;
+    protected boolean collision;
+    protected boolean shotFired;
+    protected boolean shotReady;
+    protected int prevCount;
+    protected double coolDownFrames;
+    protected double coolDown;
+    protected boolean moving;
+    protected Timer shotTimer;
+    protected boolean moveControl;
+    protected int moveCount;
+    protected boolean leftKeyPress;
+    protected boolean rightKeyPress;
+    protected boolean upKeyPress;
+    protected boolean downKeyPress;
+
+<span class="fc" id="L27">    public Characters(App app, int x, int y, double coolDown) {</span>
+<span class="fc" id="L28">        this.app = app;</span>
+<span class="fc" id="L29">        this.x = x;</span>
+<span class="fc" id="L30">        this.y = y;</span>
+<span class="fc" id="L31">        this.spriteSize = App.SPRITESIZE;</span>
+<span class="fc" id="L32">        this.speed = 0;</span>
+<span class="fc" id="L33">        this.direction = 0;</span>
+<span class="fc" id="L34">        this.isAlive = true;</span>
+<span class="fc" id="L35">        this.collision = false;</span>
+<span class="fc" id="L36">        this.shotFired = false;</span>
+<span class="fc" id="L37">        this.shotReady = true;</span>
+<span class="fc" id="L38">        this.prevCount = 0;</span>
+<span class="fc" id="L39">        this.coolDown = coolDown;</span>
+<span class="fc" id="L40">        this.moving = false;</span>
+<span class="fc" id="L41">        this.shotTimer = new Timer((float) coolDown);</span>
+<span class="fc" id="L42">        this.moveControl = false;</span>
+<span class="fc" id="L43">        this.moveCount = 0;</span>
+<span class="fc" id="L44">        this.leftKeyPress = false;</span>
+<span class="fc" id="L45">        this.rightKeyPress = false;</span>
+<span class="fc" id="L46">        this.upKeyPress = false;</span>
+<span class="fc" id="L47">        this.downKeyPress = false;</span>
+<span class="fc" id="L48">    }</span>
+
+    public void tick() {
+
+<span class="nc bnc" id="L52" title="All 2 branches missed.">        if (isAlive == true) {</span>
+            // Shot timer depending on cooldown for all characters.
+<span class="nc bnc" id="L54" title="All 2 branches missed.">            if (shotReady == false) {</span>
+<span class="nc" id="L55">                shotTimer.countDown();</span>
+<span class="nc bnc" id="L56" title="All 2 branches missed.">                if (shotTimer.getTime() &lt;= 0) {</span>
+<span class="nc" id="L57">                    shotReady = true;</span>
+<span class="nc" id="L58">                    shotTimer.setTime((float) coolDown);</span>
+                }
+            }
+
+<span class="nc bnc" id="L62" title="All 6 branches missed.">            if (moving == false &amp;&amp; moveControl == true &amp;&amp; app.keyPressed) {</span>
+<span class="nc bnc" id="L63" title="All 2 branches missed.">                if (rightKeyPress == true) {</span>
+<span class="nc" id="L64">                    this.direction = 1;</span>
+<span class="nc" id="L65">                    moving = true;</span>
+                }
+<span class="nc bnc" id="L67" title="All 2 branches missed.">                if (leftKeyPress == true) {</span>
+<span class="nc" id="L68">                    this.direction = 0;</span>
+<span class="nc" id="L69">                    moving = true;</span>
+                }
+<span class="nc bnc" id="L71" title="All 2 branches missed.">                if (upKeyPress == true) {</span>
+<span class="nc" id="L72">                    this.direction = 2;</span>
+<span class="nc" id="L73">                    moving = true;</span>
+                }
+<span class="nc bnc" id="L75" title="All 2 branches missed.">                if (downKeyPress == true) {</span>
+<span class="nc" id="L76">                    this.direction = 3;</span>
+<span class="nc" id="L77">                    moving = true;</span>
+                }
+            }
+<span class="nc" id="L80">            collision = false;</span>
+<span class="nc" id="L81">            this.collision = app.colCheck.checkMoveCollision(this.x, this.y,</span>
+                    this.direction, this.spriteSize);
+
+<span class="nc bnc" id="L84" title="All 2 branches missed.">            if (moving == true) {</span>
+<span class="nc bnc" id="L85" title="All 5 branches missed.">                switch (direction) {</span>
+                    case 1: // right
+<span class="nc bnc" id="L87" title="All 6 branches missed.">                        if (collision == false || collision == true &amp;&amp; direction == 0) {</span>
+<span class="nc" id="L88">                            this.x += this.speed;</span>
+                        }
+                        break;
+                    case 0: // left
+<span class="nc bnc" id="L92" title="All 6 branches missed.">                        if (collision == false || collision == true &amp;&amp; direction == 1) {</span>
+<span class="nc" id="L93">                            this.x -= this.speed;</span>
+                        }
+                        break;
+                    case 2: // up
+<span class="nc bnc" id="L97" title="All 6 branches missed.">                        if (collision == false || collision == true &amp;&amp; direction == 3) {</span>
+<span class="nc" id="L98">                            this.y -= this.speed;</span>
+                        }
+                        break;
+                    case 3:// down
+<span class="nc bnc" id="L102" title="All 6 branches missed.">                        if (collision == false || collision == true &amp;&amp; direction == 2) {</span>
+<span class="nc" id="L103">                            this.y += this.speed;</span>
+                        }
+                        break;
+                }
+<span class="nc bnc" id="L107" title="All 2 branches missed.">                if (moveControl == true) {</span>
+<span class="nc" id="L108">                    moveCount += this.speed;</span>
+<span class="nc bnc" id="L109" title="All 2 branches missed.">                    if (moveCount == 20) {</span>
+<span class="nc" id="L110">                        moving = false;</span>
+
+<span class="nc" id="L112">                        moveCount = 0;</span>
+                    }
+                }
+            }
+        }
+<span class="nc" id="L117">    }</span>
+
+    // Get x value
+    public int getX() {
+<span class="fc" id="L121">        return this.x;</span>
+    }
+
+    // get Y Value
+    public int getY() {
+<span class="fc" id="L126">        return this.y;</span>
+    }
+
+    // set X value
+    public void setX(int x) {
+<span class="fc" id="L131">        this.x = x;</span>
+<span class="fc" id="L132">    }</span>
+
+    // set Y value
+    public void setY(int y) {
+<span class="fc" id="L136">        this.y = y;</span>
+<span class="fc" id="L137">    }</span>
+
+    // change alive value
+    public void deathCollide() {
+<span class="fc" id="L141">        this.isAlive = false;</span>
+<span class="fc" id="L142">    }</span>
+
+    // get current direction
+    public int getDirection() {
+<span class="fc" id="L146">        return this.direction;</span>
+    }
+
+    // get current alive status
+    public boolean getIsAlive() {
+<span class="fc" id="L151">        return this.isAlive;</span>
+    }
+
+    // set Speed value
+    public void setSpeed(int speed) {
+<span class="fc" id="L156">        this.speed = speed;</span>
+<span class="fc" id="L157">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

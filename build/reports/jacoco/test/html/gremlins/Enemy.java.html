@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Enemy.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Gremlins</a> &gt; <a href="index.source.html" class="el_package">gremlins</a> &gt; <span class="el_source">Enemy.java</span></div><h1>Enemy.java</h1><pre class="source lang-java linenums">package gremlins;
+
+import java.util.Random;
+
+import processing.core.PApplet;
+import processing.core.PImage;
+import java.util.ArrayList;
+
+public class Enemy extends Characters {
+
+    protected PImage sprite;
+    protected int low;
+    protected int high;
+    protected int backTrack;
+    protected boolean respawn;
+    protected Boolean freeze;
+    protected Map respawnCoord;
+    protected Random newDirec;
+    protected ArrayList&lt;Integer&gt; posDirec;
+
+    public Enemy(App app, int x, int y, double coolDown, PImage sprite) {
+<span class="fc" id="L22">        super(app, x, y, coolDown);</span>
+<span class="fc" id="L23">        this.sprite = sprite;</span>
+<span class="fc" id="L24">        this.low = 0;</span>
+<span class="fc" id="L25">        this.high = 4;</span>
+<span class="fc" id="L26">        this.backTrack = 4;</span>
+<span class="fc" id="L27">        this.freeze = false;</span>
+<span class="fc" id="L28">        this.respawnCoord = new Map(app);</span>
+<span class="fc" id="L29">        this.speed = 1;</span>
+<span class="fc" id="L30">        this.direction = App.randomGenerator.nextInt(4);</span>
+<span class="fc" id="L31">        this.app = app;</span>
+<span class="fc" id="L32">        this.respawn = false;</span>
+<span class="fc" id="L33">        this.moveControl = false;</span>
+<span class="fc" id="L34">        this.moving = true;</span>
+<span class="fc" id="L35">        this.coolDownFrames = (int) Math.round(App.FPS * this.coolDown);</span>
+<span class="fc" id="L36">        this.newDirec = new Random();</span>
+
+<span class="fc" id="L38">    }</span>
+
+    public void tick() {
+<span class="nc" id="L41">        super.tick();</span>
+
+<span class="nc bnc" id="L43" title="All 2 branches missed.">        if (isAlive == true) {</span>
+
+<span class="nc bnc" id="L45" title="All 2 branches missed.">            if (this.app.colCheck.checkFireballCollision(this.x, this.y, this.spriteSize) == true) {</span>
+<span class="nc" id="L46">                this.isAlive = false;</span>
+            }
+
+            // checks if collision is true, if so makes sure direction is unique
+<span class="nc bnc" id="L50" title="All 2 branches missed.">            if (this.collision == true) {</span>
+                // randomises enemy direction on collision
+<span class="nc bnc" id="L52" title="All 2 branches missed.">                if (direction == 1) {</span>
+<span class="nc" id="L53">                    int[] ran = new int[] { 2, 3 };</span>
+<span class="nc" id="L54">                    int rnd = new Random().nextInt(ran.length);</span>
+<span class="nc" id="L55">                    this.direction = ran[rnd];</span>
+<span class="nc bnc" id="L56" title="All 2 branches missed.">                } else if (direction == 0) {</span>
+<span class="nc" id="L57">                    int[] ran = new int[] { 2, 3 };</span>
+<span class="nc" id="L58">                    int rnd = new Random().nextInt(ran.length);</span>
+<span class="nc" id="L59">                    this.direction = ran[rnd];</span>
+<span class="nc bnc" id="L60" title="All 2 branches missed.">                } else if (direction == 2) {</span>
+<span class="nc" id="L61">                    int[] ran = new int[] { 1, 0 };</span>
+<span class="nc" id="L62">                    int rnd = new Random().nextInt(ran.length);</span>
+<span class="nc" id="L63">                    this.direction = ran[rnd];</span>
+<span class="nc bnc" id="L64" title="All 2 branches missed.">                } else if (direction == 3) {</span>
+<span class="nc" id="L65">                    int[] ran = new int[] { 1, 0 };</span>
+<span class="nc" id="L66">                    int rnd = new Random().nextInt(ran.length);</span>
+<span class="nc" id="L67">                    this.direction = ran[rnd];</span>
+<span class="nc" id="L68">                }</span>
+            }
+<span class="nc bnc" id="L70" title="All 2 branches missed.">        } else if (respawn == false) {</span>
+            // respawns enemies to random location 10+ spaces away rom wizard.
+<span class="nc" id="L72">            int[] randCoord = new int[1];</span>
+<span class="nc" id="L73">            randCoord = respawnCoord.mapRandomSpawn();</span>
+<span class="nc" id="L74">            this.x = randCoord[0];</span>
+<span class="nc" id="L75">            this.y = randCoord[1];</span>
+<span class="nc" id="L76">            this.isAlive = true;</span>
+<span class="nc" id="L77">            respawn = false;</span>
+        }
+
+<span class="nc" id="L80">    }</span>
+
+    public void draw(PApplet app) {
+<span class="nc" id="L83">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

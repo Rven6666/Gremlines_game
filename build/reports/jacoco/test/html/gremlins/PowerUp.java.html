@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PowerUp.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Gremlins</a> &gt; <a href="index.source.html" class="el_package">gremlins</a> &gt; <span class="el_source">PowerUp.java</span></div><h1>PowerUp.java</h1><pre class="source lang-java linenums">package gremlins;
+
+import processing.core.PImage;
+import processing.core.PApplet;
+
+public class PowerUp {
+
+    private App app;
+    private int x;
+    private int y;
+    private PImage[] powerUpList;
+    private boolean collision;
+    private int counter;
+    private int imageDisplay;
+    private boolean spawn;
+    private Timer startTimer;
+    private Timer powerTimer;
+    private boolean playSound;
+    private float ranNum;
+    private Map randRespawn;
+    private int[] randCoord;
+    private int powerType;
+    private boolean selectPower;
+
+<span class="fc" id="L25">    public PowerUp(App app, int x, int y, PImage[] powerUpList) {</span>
+<span class="fc" id="L26">        this.app = app;</span>
+<span class="fc" id="L27">        this.x = x;</span>
+<span class="fc" id="L28">        this.y = y;</span>
+<span class="fc" id="L29">        this.powerUpList = powerUpList;</span>
+<span class="fc" id="L30">        this.collision = false;</span>
+<span class="fc" id="L31">        this.counter = 1;</span>
+<span class="fc" id="L32">        this.spawn = false;</span>
+<span class="fc" id="L33">        this.startTimer = new Timer(10);</span>
+<span class="fc" id="L34">        this.powerTimer = new Timer(10);</span>
+<span class="fc" id="L35">        this.playSound = true;</span>
+<span class="fc" id="L36">        this.randRespawn = new Map(app);</span>
+<span class="fc" id="L37">        this.randCoord = new int[1];</span>
+<span class="fc" id="L38">        this.powerType = 0;</span>
+<span class="fc" id="L39">        this.selectPower = true;</span>
+
+<span class="fc" id="L41">    }</span>
+
+    void tick() {
+
+        // SHOT COOL DOWN TIMER
+<span class="nc bnc" id="L46" title="All 2 branches missed.">        if (startTimer.getTime() &lt;= 0F) {</span>
+<span class="nc" id="L47">            spawn = true;</span>
+<span class="nc" id="L48">            collision = false;</span>
+        }
+
+<span class="nc bnc" id="L51" title="All 2 branches missed.">        if (spawn == true) {</span>
+<span class="nc bnc" id="L52" title="All 2 branches missed.">            if ((counter % 20) == 0) {</span>
+<span class="nc" id="L53">                this.imageDisplay++;</span>
+<span class="nc bnc" id="L54" title="All 2 branches missed.">                if (this.imageDisplay == 2) {</span>
+<span class="nc" id="L55">                    this.imageDisplay = 0;</span>
+                }
+            }
+<span class="nc" id="L58">            counter++;</span>
+
+<span class="nc bnc" id="L60" title="All 2 branches missed.">            if (collision == true) {</span>
+<span class="nc bnc" id="L61" title="All 2 branches missed.">                if (selectPower == true) {</span>
+<span class="nc" id="L62">                    this.powerType = this.imageDisplay;</span>
+<span class="nc" id="L63">                    selectPower = false;</span>
+                }
+
+<span class="nc bnc" id="L66" title="All 2 branches missed.">                if (powerType == 0) {</span>
+<span class="nc bnc" id="L67" title="All 2 branches missed.">                    if (playSound == true) {</span>
+<span class="nc" id="L68">                        app.powerSound.play();</span>
+<span class="nc" id="L69">                        playSound = false;</span>
+                    }
+
+<span class="nc" id="L72">                    app.wizard.setCoolDown(0.0001);</span>
+
+<span class="nc bnc" id="L74" title="All 2 branches missed.">                    if (powerTimer.getTime() &lt;= 0F) {</span>
+<span class="nc" id="L75">                        app.wizard.setCoolDown(app.wizCoolDownTime);</span>
+<span class="nc" id="L76">                        playSound = true;</span>
+                    }
+
+<span class="nc bnc" id="L79" title="All 2 branches missed.">                } else if (powerType == 1) {</span>
+<span class="nc bnc" id="L80" title="All 2 branches missed.">                    if (playSound == true) {</span>
+<span class="nc" id="L81">                        app.powerSound.play();</span>
+<span class="nc" id="L82">                        playSound = false;</span>
+                    }
+
+<span class="nc bnc" id="L85" title="All 2 branches missed.">                    for (Gremlins gremlin : app.gremlinList) {</span>
+<span class="nc" id="L86">                        gremlin.setSpeed(0);</span>
+<span class="nc" id="L87">                        gremlin.setFreeze(true);</span>
+
+<span class="nc" id="L89">                    }</span>
+<span class="nc bnc" id="L90" title="All 2 branches missed.">                    if (powerTimer.getTime() &lt;= 0F) {</span>
+<span class="nc bnc" id="L91" title="All 2 branches missed.">                        for (Gremlins gremlin : app.gremlinList) {</span>
+<span class="nc" id="L92">                            gremlin.setSpeed(1);</span>
+<span class="nc" id="L93">                            gremlin.setFreeze(false);</span>
+<span class="nc" id="L94">                        }</span>
+<span class="nc" id="L95">                        playSound = true;</span>
+                    }
+                }
+
+            }
+        }
+<span class="nc" id="L101">    }</span>
+
+    void draw(PApplet App) {
+
+<span class="nc bnc" id="L105" title="All 2 branches missed.">        if (spawn == true) {</span>
+<span class="nc bnc" id="L106" title="All 2 branches missed.">            if (collision == false) {</span>
+<span class="nc" id="L107">                app.image(this.powerUpList[this.imageDisplay], this.x, this.y);</span>
+            }
+        }
+
+        // PowerUp Display
+<span class="nc" id="L112">        app.textFont(app.font, 16);</span>
+<span class="nc" id="L113">        app.fill(109, 36, 178);</span>
+<span class="nc" id="L114">        app.text(&quot;Power Up: &quot;, 460, 695);</span>
+<span class="nc" id="L115">        app.textFont(app.font, 14);</span>
+<span class="nc" id="L116">        app.text(&quot;Countdown: &quot;, 545, 685);</span>
+<span class="nc" id="L117">        app.text(&quot;Power type: &quot;, 545, 705);</span>
+<span class="nc bnc" id="L118" title="All 2 branches missed.">        if (collision == true) {</span>
+
+            // sets random Coordinates
+
+<span class="nc" id="L122">            app.fill(255);</span>
+<span class="nc bnc" id="L123" title="All 2 branches missed.">            if (powerType == 0) {</span>
+<span class="nc" id="L124">                app.text(&quot;FAST FIRE!!&quot;, 625, 705);</span>
+<span class="nc bnc" id="L125" title="All 2 branches missed.">            } else if (powerType == 1) {</span>
+<span class="nc" id="L126">                app.text(&quot;FREEZE!&quot;, 625, 705);</span>
+            }
+<span class="nc bnc" id="L128" title="All 2 branches missed.">            if (powerTimer.getTime() &gt; 0F) {</span>
+<span class="nc" id="L129">                powerTimer.countDown();</span>
+<span class="nc" id="L130">                app.text(powerTimer.getTime(), 630, 685);</span>
+            } else {
+<span class="nc" id="L132">                randCoord = randRespawn.mapRandomSpawn();</span>
+<span class="nc" id="L133">                this.x = randCoord[0];</span>
+<span class="nc" id="L134">                this.y = randCoord[1];</span>
+<span class="nc" id="L135">                powerTimer.setTime(ranNum);</span>
+<span class="nc" id="L136">                collision = false;</span>
+<span class="nc" id="L137">                selectPower = true;</span>
+            }
+<span class="nc bnc" id="L139" title="All 4 branches missed.">        } else if (collision == false &amp;&amp; spawn == false) {</span>
+<span class="nc" id="L140">            app.fill(255);</span>
+<span class="nc bnc" id="L141" title="All 2 branches missed.">            if (startTimer.getTime() &gt; 0F) {</span>
+<span class="nc" id="L142">                startTimer.countDown();</span>
+<span class="nc" id="L143">                app.text(startTimer.getTime(), 630, 685);</span>
+<span class="nc" id="L144">                app.noFill();</span>
+            }
+        }
+
+<span class="nc" id="L148">    }</span>
+
+    // Get X value
+    public int getX() {
+<span class="fc" id="L152">        return this.x;</span>
+    }
+
+    // Get Y value
+    public int getY() {
+<span class="fc" id="L157">        return this.y;</span>
+    }
+
+    // Sets collision if occured.
+    public void setCollision(boolean collision) {
+<span class="fc" id="L162">        this.collision = collision;</span>
+<span class="fc" id="L163">    }</span>
+
+    public boolean getCollision() {
+<span class="fc" id="L166">        return this.collision;</span>
+    }
+
+    // gets respawn timer
+    public void setSpawnTimer(float ranNum) {
+<span class="nc" id="L171">        this.startTimer.setTime(ranNum);</span>
+<span class="nc" id="L172">        this.ranNum = ranNum;</span>
+<span class="nc" id="L173">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

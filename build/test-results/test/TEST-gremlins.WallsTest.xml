@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="gremlins.WallsTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2024-07-15T17:15:08" hostname="daleMM.local" time="0.019">
+  <properties/>
+  <testcase name="constructor()" classname="gremlins.WallsTest" time="0.001"/>
+  <testcase name="getX()" classname="gremlins.WallsTest" time="0.003"/>
+  <testcase name="getY()" classname="gremlins.WallsTest" time="0.001"/>
+  <testcase name="getSolid()" classname="gremlins.WallsTest" time="0.003"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

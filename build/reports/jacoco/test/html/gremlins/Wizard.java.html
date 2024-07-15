@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Wizard.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Gremlins</a> &gt; <a href="index.source.html" class="el_package">gremlins</a> &gt; <span class="el_source">Wizard.java</span></div><h1>Wizard.java</h1><pre class="source lang-java linenums">package gremlins;
+
+import processing.core.PApplet;
+import processing.core.PImage;
+
+public class Wizard extends Characters {
+    private PImage[] wizSprite;
+    private int lives;
+    boolean nextLevel;
+    private int progBarIncre;
+    private int progBarValue;
+    private boolean manaStart;
+    private Timer speedTimer;
+    private boolean pumkinslow;
+
+    public Wizard(App app, double coolDown, int x, int y, PImage[] wizSprite, int lives) {
+<span class="fc" id="L17">        super(app, x, y, coolDown);</span>
+<span class="fc" id="L18">        this.wizSprite = wizSprite;</span>
+<span class="fc" id="L19">        this.lives = lives;</span>
+<span class="fc" id="L20">        this.nextLevel = false;</span>
+<span class="fc" id="L21">        this.progBarIncre = 0;</span>
+<span class="fc" id="L22">        this.progBarValue = 100;</span>
+<span class="fc" id="L23">        this.manaStart = false;</span>
+<span class="fc" id="L24">        this.speedTimer = new Timer(1);</span>
+<span class="fc" id="L25">        this.pumkinslow = false;</span>
+<span class="fc" id="L26">        this.speed = 2;</span>
+<span class="fc" id="L27">        this.direction = 1;</span>
+<span class="fc" id="L28">        this.moving = false;</span>
+<span class="fc" id="L29">        this.shotReady = true;</span>
+<span class="fc" id="L30">        this.shotFired = false;</span>
+<span class="fc" id="L31">        this.moveControl = true;</span>
+<span class="fc" id="L32">        this.coolDownFrames = Math.round(App.FPS * this.coolDown);</span>
+<span class="fc" id="L33">    }</span>
+
+    public void tick() {
+<span class="nc" id="L36">        super.tick();</span>
+
+<span class="nc bnc" id="L38" title="All 2 branches missed.">        if (this.isAlive) {</span>
+
+            // System.out.println(direction);
+
+            // SHOOT FIREBALL IF READY
+<span class="nc bnc" id="L43" title="All 4 branches missed.">            if (this.shotFired == true &amp;&amp; this.shotReady == true) {</span>
+<span class="nc" id="L44">                this.app.fireballList.add(new Fireball(app, this.x, this.y, true, this.direction, app.fireSprite));</span>
+<span class="nc" id="L45">                this.manaStart = true;</span>
+<span class="nc" id="L46">                this.shotFired = false;</span>
+<span class="nc" id="L47">                this.shotReady = false;</span>
+            }
+
+            // Check collisions:
+<span class="nc" id="L51">            app.colCheck.checkPowerUpcol(this.x, this.y, this.spriteSize);</span>
+<span class="nc bnc" id="L52" title="All 2 branches missed.">            if ((app.colCheck.checkGremlinCollision(this.x, this.y, this.spriteSize) == true)) {</span>
+<span class="nc" id="L53">                deathCollide();</span>
+            }
+<span class="nc bnc" id="L55" title="All 2 branches missed.">            if (app.colCheck.checkSlimeballCollision(this.x, this.y, this.spriteSize) == true) {</span>
+<span class="nc" id="L56">                deathCollide();</span>
+            }
+<span class="nc bnc" id="L58" title="All 2 branches missed.">            if (app.colCheck.checkPumkinCollision(this.x, this.y, this.spriteSize) == true) {</span>
+<span class="nc" id="L59">                this.speed = 1;</span>
+<span class="nc" id="L60">                this.pumkinslow = true;</span>
+            }
+
+<span class="nc bnc" id="L63" title="All 2 branches missed.">            if (pumkinslow == true) {</span>
+<span class="nc" id="L64">                this.speedTimer.countDown();</span>
+<span class="nc bnc" id="L65" title="All 2 branches missed.">                if (speedTimer.getTime() &lt;= 0) {</span>
+<span class="nc" id="L66">                    speedTimer.setTime(1.5F);</span>
+<span class="nc" id="L67">                    this.speed = 2;</span>
+<span class="nc" id="L68">                    pumkinslow = false;</span>
+                }
+            }
+
+<span class="nc bnc" id="L72" title="All 2 branches missed.">            if (app.colCheck.checkExitCollision(this.x, this.y, this.spriteSize) == true) {</span>
+<span class="nc bnc" id="L73" title="All 6 branches missed.">                if (app.getLevel() &gt;= app.getNumLevels() &amp;&amp; isAlive &amp;&amp; lives &gt; 0) {</span>
+<span class="nc" id="L74">                    app.setWin(true);</span>
+                } else {
+<span class="nc" id="L76">                    this.nextLevel = true;</span>
+                }
+            }
+
+            // RESPAWN ON DEATH IF HAVE ENOUGH LIVES
+<span class="nc bnc" id="L81" title="All 4 branches missed.">        } else if (this.isAlive == false &amp;&amp; this.lives &gt; 0)</span>
+
+        {
+<span class="nc" id="L84">            this.lives = this.lives - 1;</span>
+<span class="nc bnc" id="L85" title="All 2 branches missed.">            if (this.lives != 0) {</span>
+<span class="nc" id="L86">                this.setX(40);</span>
+<span class="nc" id="L87">                this.setY(20);</span>
+<span class="nc" id="L88">                app.gameReset();</span>
+<span class="nc" id="L89">                this.isAlive = true;</span>
+            }
+
+        }
+<span class="nc" id="L93">    }</span>
+
+    public void draw(PApplet app) {
+<span class="nc bnc" id="L96" title="All 4 branches missed.">        if (this.isAlive &amp;&amp; lives &gt; 0) {</span>
+            // DRAWS PLAYER
+<span class="nc" id="L98">            app.image(this.wizSprite[direction], this.x, this.y);</span>
+
+            // VISUAL DISPLAY OF PLAYER LIVES ON SCORE BOARD
+<span class="nc bnc" id="L101" title="All 2 branches missed.">            if (this.lives == 3) {</span>
+<span class="nc" id="L102">                app.image(wizSprite[1], 75, 680);</span>
+<span class="nc" id="L103">                app.image(wizSprite[1], 95, 680);</span>
+<span class="nc" id="L104">                app.image(wizSprite[1], 115, 680);</span>
+<span class="nc bnc" id="L105" title="All 2 branches missed.">            } else if (this.lives == 2) {</span>
+<span class="nc" id="L106">                app.image(wizSprite[1], 75, 680);</span>
+<span class="nc" id="L107">                app.image(wizSprite[1], 95, 680);</span>
+<span class="nc bnc" id="L108" title="All 2 branches missed.">            } else if (this.lives == 1) {</span>
+<span class="nc" id="L109">                app.image(wizSprite[1], 75, 680);</span>
+            }
+
+            // MANA BAR IN SCORE AREA
+<span class="nc" id="L113">            app.fill(7, 118, 182);</span>
+<span class="nc" id="L114">            double num = Math.ceil((1 - 0) * 100 / (this.coolDownFrames - 0));</span>
+<span class="nc" id="L115">            progBarIncre = (int) num;</span>
+<span class="nc" id="L116">            app.rect(330, 685, progBarValue, 10, 5);</span>
+<span class="nc" id="L117">            app.noFill();</span>
+<span class="nc" id="L118">            app.noStroke();</span>
+
+<span class="nc bnc" id="L120" title="All 4 branches missed.">            if (manaStart == true &amp;&amp; progBarValue &gt; 0) {</span>
+<span class="nc" id="L121">                progBarValue -= progBarIncre;</span>
+            } else {
+<span class="nc" id="L123">                progBarValue = 100;</span>
+<span class="nc" id="L124">                manaStart = false;</span>
+            }
+
+        }
+<span class="nc" id="L128">    }</span>
+
+    // Get number of lives
+    public int getLives() {
+<span class="fc" id="L132">        return this.lives;</span>
+    }
+
+    // set number of lives
+    public void setLives(int lives) {
+<span class="fc" id="L137">        this.lives = lives;</span>
+<span class="fc" id="L138">    }</span>
+
+    // set UP Key press
+    public void setUpKeypress(boolean upKeyPress) {
+<span class="fc" id="L142">        this.upKeyPress = upKeyPress;</span>
+<span class="fc" id="L143">    }</span>
+
+    // Set Down key press
+    public void setDownKeypress(boolean downKeyPress) {
+<span class="fc" id="L147">        this.downKeyPress = downKeyPress;</span>
+<span class="fc" id="L148">    }</span>
+
+    // set Left key press
+    public void setLeftKeypress(boolean leftKeyPress) {
+<span class="fc" id="L152">        this.leftKeyPress = leftKeyPress;</span>
+<span class="fc" id="L153">    }</span>
+
+    // Set Right Key press
+    public void setRightKeypress(boolean rightKeyPress) {
+<span class="fc" id="L157">        this.rightKeyPress = rightKeyPress;</span>
+<span class="fc" id="L158">    }</span>
+
+    // check/get if next level needs ot be loaded
+    public boolean getNextLevel() {
+<span class="fc" id="L162">        return this.nextLevel;</span>
+    }
+
+    // set the condition of next level
+    public boolean setNextLevel(boolean nextLevel) {
+<span class="fc" id="L167">        return this.nextLevel;</span>
+    }
+
+    public void setCoolDown(double coolDown) {
+<span class="fc" id="L171">        this.coolDown = coolDown;</span>
+<span class="fc" id="L172">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>
